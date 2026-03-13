@@ -56,7 +56,12 @@ const Icons = {
 
 const serviceIcons = [Icons.chart, Icons.ai, Icons.cloud, Icons.users];
 
+function isValidHex(hex: string): boolean {
+  return /^#[0-9A-Fa-f]{6}$/.test(hex);
+}
+
 function hexToRgba(hex: string, alpha: number) {
+  if (!isValidHex(hex)) return `rgba(37,99,235,${alpha})`;
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
@@ -64,6 +69,7 @@ function hexToRgba(hex: string, alpha: number) {
 }
 
 function lightenColor(hex: string, amount: number) {
+  if (!isValidHex(hex)) hex = "#2563EB";
   const r = Math.min(255, parseInt(hex.slice(1, 3), 16) + amount);
   const g = Math.min(255, parseInt(hex.slice(3, 5), 16) + amount);
   const b = Math.min(255, parseInt(hex.slice(5, 7), 16) + amount);
@@ -71,8 +77,8 @@ function lightenColor(hex: string, amount: number) {
 }
 
 export default function ProfileRenderer({ data }: { data: CompanyData }) {
-  const p = data.primaryColor;
-  const s = data.secondaryColor;
+  const p = isValidHex(data.primaryColor) ? data.primaryColor : "#2563EB";
+  const s = isValidHex(data.secondaryColor) ? data.secondaryColor : "#7C3AED";
   const pLight = lightenColor(p, 200);
 
   const pageStyle: React.CSSProperties = {
@@ -306,7 +312,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, marginBottom: 40 }}>
             {data.stats.slice(0, 3).map((stat, i) => (
               <div key={i} style={{ textAlign: "center", padding: "32px 16px", background: i === 0 ? hexToRgba(p, 0.04) : "#F8FAFC", borderRadius: 16, border: `1px solid ${i === 0 ? hexToRgba(p, 0.12) : "#E2E8F0"}` }}>
-                <div style={{ fontFamily: "var(--font-inter)", fontSize: 56, fontWeight: 900, color: p, lineHeight: 1, letterSpacing: "-0.03em" }}>
+                <div style={{ fontFamily: "var(--font-inter)", fontSize: stat.value.length > 5 ? 40 : stat.value.length > 3 ? 48 : 56, fontWeight: 900, color: p, lineHeight: 1, letterSpacing: "-0.03em" }}>
                   {stat.value}
                 </div>
                 <div style={{ fontFamily: "var(--font-inter)", fontSize: 18, fontWeight: 400, color: hexToRgba(p, 0.6), marginTop: 4 }}>{stat.unit}</div>
