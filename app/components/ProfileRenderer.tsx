@@ -144,7 +144,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
         )}
 
         {/* Footer line */}
-        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", position: "relative", zIndex: 1 }}>
+        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", position: "relative", zIndex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "100%" }}>
           {data.companyName}｜会社紹介資料｜{coverDate}
         </p>
       </div>
@@ -179,7 +179,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
 
           {/* Values with icons */}
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" as const, color: p, marginBottom: 16 }}>Our Values</div>
-          <div style={{ display: "grid", gridTemplateColumns: `repeat(${data.values.length}, 1fr)`, gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.max(data.values.length, 2)}, 1fr)`, gap: 16 }}>
             {data.values.map((v, i) => (
               <div key={i} style={{ background: "#F8FAFC", borderRadius: 12, padding: "20px 16px", textAlign: "center", border: "1px solid #E2E8F0", position: "relative" }}>
                 <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 40, height: 3, background: p, borderRadius: "0 0 4px 4px" }} />
@@ -281,7 +281,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
                     </div>
                   </div>
                   <div style={{ fontSize: 17, fontWeight: 800, marginBottom: 8, color: "#1E293B" }}>{svc.title}</div>
-                  <div style={{ fontSize: 12, color: "#64748B", lineHeight: 1.7, marginBottom: 16 }}>{svc.description}</div>
+                  <div style={{ fontSize: 12, color: "#64748B", lineHeight: 1.7, marginBottom: 16, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 4, WebkitBoxOrient: "vertical" as const }}>{svc.description}</div>
                   {/* Highlight badge */}
                   <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 12px", background: hexToRgba(accent, 0.06), borderRadius: 8, border: `1px solid ${hexToRgba(accent, 0.12)}` }}>
                     {Icons.check(accent, 14)}
@@ -309,7 +309,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
           </div>
 
           {/* Primary stats (top 3) */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, marginBottom: 40 }}>
+          <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(data.stats.length, 3)}, 1fr)`, gap: 24, marginBottom: 40 }}>
             {data.stats.slice(0, 3).map((stat, i) => (
               <div key={i} style={{ textAlign: "center", padding: "32px 16px", background: i === 0 ? hexToRgba(p, 0.04) : "#F8FAFC", borderRadius: 16, border: `1px solid ${i === 0 ? hexToRgba(p, 0.12) : "#E2E8F0"}` }}>
                 <div style={{ fontFamily: "var(--font-inter)", fontSize: stat.value.length > 5 ? 40 : stat.value.length > 3 ? 48 : 56, fontWeight: 900, color: p, lineHeight: 1, letterSpacing: "-0.03em" }}>
@@ -360,7 +360,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
           <h2 style={{ fontFamily: "var(--font-inter)", fontSize: 28, fontWeight: 800, marginBottom: 8 }}>経営チーム</h2>
           <p style={{ fontSize: 13, color: "#64748B", marginBottom: 32, lineHeight: 1.6 }}>{data.teamIntro}</p>
 
-          <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(data.team.length, 3)}, 1fr)`, gap: 24, marginBottom: 40 }}>
+          {data.team.length > 0 && <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(data.team.length, 3)}, 1fr)`, gap: 24, marginBottom: 40 }}>
             {data.team.map((member, i) => (
               <div key={i} className="card-no-break" style={{ textAlign: "center", padding: "24px 16px", background: "#F8FAFC", borderRadius: 16, border: "1px solid #E2E8F0" }}>
                 {/* Avatar with gradient ring */}
@@ -373,10 +373,10 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
                 </div>
                 <div style={{ fontSize: 16, fontWeight: 800, marginBottom: 4, color: "#1E293B" }}>{member.name}</div>
                 <div style={{ fontSize: 12, color: p, fontWeight: 700, marginBottom: 12, letterSpacing: "0.02em" }}>{member.role}</div>
-                <div style={{ fontSize: 11, color: "#64748B", lineHeight: 1.7 }}>{member.bio}</div>
+                <div style={{ fontSize: 11, color: "#64748B", lineHeight: 1.7, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" as const }}>{member.bio}</div>
               </div>
             ))}
-          </div>
+          </div>}
 
           {/* Org stats */}
           {data.orgStats.length > 0 && (
