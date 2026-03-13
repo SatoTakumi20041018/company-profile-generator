@@ -8,6 +8,8 @@ function isValidHex(hex: string): boolean {
 
 export default function ProfileRenderer({ data }: { data: CompanyData }) {
   const accent = isValidHex(data.primaryColor) ? data.primaryColor : "#1a1a1a";
+  const hasProducts = data.products && data.products.length > 0;
+  const pOff = hasProducts ? 1 : 0; // page offset for dynamic numbering
 
   const page: React.CSSProperties = {
     width: "210mm",
@@ -164,6 +166,48 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
         {pageFooter(4)}
       </div>
 
+      {/* ── P4.5: PRODUCTS ── */}
+      {data.products && data.products.length > 0 && (
+        <div className="profile-page" style={{ ...page, padding: "64px" }}>
+          <div style={{ marginBottom: 40 }}>
+            <div style={{ fontSize: 10, color: "#aaa", fontWeight: 500, marginBottom: 6 }}>商品・サービス</div>
+            <h2 style={{ fontSize: 20, fontWeight: 700 }}>Products</h2>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: data.products.length === 1 ? "1fr" : "1fr 1fr", gap: 24 }}>
+            {data.products.map((product, i) => (
+              <div key={i} style={{
+                border: "1px solid #f0f0f0", borderRadius: 4, padding: 24,
+                display: "flex", flexDirection: "column", gap: 12,
+              }}>
+                <h3 style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.4 }}>{product.name}</h3>
+                <div style={{ fontSize: 12, color: "#666", lineHeight: 1.9 }}>{product.description}</div>
+                {product.price && (
+                  <div style={{ fontSize: 13, fontWeight: 700, color: accent }}>{product.price}</div>
+                )}
+                {product.features && (
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                    {product.features.split("/").map((f, j) => (
+                      <span key={j} style={{
+                        fontSize: 10, color: "#666", background: "#f8f8f8",
+                        padding: "3px 8px", borderRadius: 2, fontWeight: 500,
+                      }}>{f.trim()}</span>
+                    ))}
+                  </div>
+                )}
+                {product.targetAudience && (
+                  <div style={{ fontSize: 11, color: "#999", marginTop: 4 }}>
+                    <span style={{ fontWeight: 600 }}>対象:</span> {product.targetAudience}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {pageFooter(5)}
+        </div>
+      )}
+
       {/* ── P5: NUMBERS ── */}
       <div className="profile-page" style={{ ...page, padding: "64px" }}>
         <div style={{ marginBottom: 48 }}>
@@ -227,7 +271,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
           </div>
         )}
 
-        {pageFooter(5)}
+        {pageFooter(5 + pOff)}
       </div>
 
       {/* ── P6: TEAM ── */}
@@ -277,7 +321,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
           </div>
         )}
 
-        {pageFooter(6)}
+        {pageFooter(6 + pOff)}
       </div>
 
       {/* ── P7: TIMELINE ── */}
@@ -315,7 +359,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
           </div>
         ))}
 
-        {pageFooter(7)}
+        {pageFooter(7 + pOff)}
       </div>
 
       {/* ── P8: CONTACT ── */}
@@ -366,7 +410,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
           <div style={{ fontSize: 10, color: "#ccc" }}>{data.companyName}</div>
-          <span style={{ fontSize: 9, color: "#ccc", fontWeight: 500 }}>08</span>
+          <span style={{ fontSize: 9, color: "#ccc", fontWeight: 500 }}>{String(8 + pOff).padStart(2, "0")}</span>
         </div>
       </div>
     </div>

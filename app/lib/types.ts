@@ -23,6 +23,15 @@ export interface NumberStat {
   label: string;
 }
 
+export interface Product {
+  name: string;
+  description: string;
+  price: string;
+  features: string;
+  targetAudience: string;
+  sourceUrl: string;
+}
+
 export interface CompanyData {
   // Cover
   companyName: string;
@@ -37,6 +46,9 @@ export interface CompanyData {
 
   // Overview
   overview: { label: string; value: string }[];
+
+  // Products
+  products: Product[];
 
   // Services
   services: Service[];
@@ -90,6 +102,11 @@ export const defaultCompanyData: CompanyData = {
     { label: "売上高", value: "42億円（2025年度）" },
     { label: "所在地", value: "東京都渋谷区神宮前5-1-1" },
     { label: "事業内容", value: "DXコンサルティング / AIソリューション開発 / クラウドインフラ構築" },
+  ],
+
+  products: [
+    { name: "AI業務自動化パッケージ", description: "定型業務をAIで自動化。書類処理、データ入力、レポート生成を90%効率化します。", price: "月額30万円〜", features: "OCR自動読取 / チャットボット連携 / ダッシュボード / API連携", targetAudience: "業務効率化を目指す中〜大企業", sourceUrl: "" },
+    { name: "DX診断サービス", description: "現状の業務プロセスを可視化し、DX推進の優先度とロードマップを策定します。", price: "50万円（初回診断）", features: "現状分析レポート / 改善提案書 / ROI試算 / 3ヶ年ロードマップ", targetAudience: "DX推進を検討中の経営層", sourceUrl: "" },
   ],
 
   services: [
