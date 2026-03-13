@@ -5,52 +5,52 @@ import type { CompanyData } from "../lib/types";
 // SVG Icons as components
 const Icons = {
   bolt: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
   ),
   shield: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
   ),
   clock: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
   ),
   chart: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12V7H5a2 2 0 010-4h14v4"/><path d="M3 5v14a2 2 0 002 2h16v-5"/><path d="M18 12a2 2 0 000 4h4v-4h-4z"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12V7H5a2 2 0 010-4h14v4"/><path d="M3 5v14a2 2 0 002 2h16v-5"/><path d="M18 12a2 2 0 000 4h4v-4h-4z"/></svg>
   ),
   ai: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a4 4 0 014 4v2H8V6a4 4 0 014-4z"/><rect x="3" y="8" width="18" height="14" rx="2"/><circle cx="12" cy="16" r="2"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a4 4 0 014 4v2H8V6a4 4 0 014-4z"/><rect x="3" y="8" width="18" height="14" rx="2"/><circle cx="12" cy="16" r="2"/></svg>
   ),
   cloud: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.5 19H9a7 7 0 110-14h8.5"/><path d="M17 21l3-3-3-3"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.5 19H9a7 7 0 110-14h8.5"/><path d="M17 21l3-3-3-3"/></svg>
   ),
   users: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
   ),
   building: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
   ),
   trending: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
   ),
   target: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
   ),
   star: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
   ),
   check: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
   ),
   arrowRight: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
   ),
   mail: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
   ),
   phone: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
   ),
   globe: (color: string, size = 22) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
   ),
 };
 
@@ -97,16 +97,16 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
   const coverDate = `${now.getFullYear()}年${now.getMonth() + 1}月`;
 
   return (
-    <div>
+    <div role="document" aria-label="会社紹介資料プレビュー">
       {/* ═══════════ PAGE 1: COVER ═══════════
           Design science: Initial Effect (primacy), F-pattern entry point,
           dark theme for authority & sophistication, social proof stats */}
       <div className="profile-page" style={{ ...pageStyle, background: "#0F172A", display: "flex", flexDirection: "column", justifyContent: "center", padding: "80px 72px" }}>
         {/* Decorative: gradient overlay */}
-        <div style={{ position: "absolute", top: 0, right: 0, width: "45%", height: "100%", background: `linear-gradient(135deg, ${p} 0%, ${s} 100%)`, opacity: 0.12, clipPath: "polygon(30% 0%, 100% 0%, 100% 100%, 0% 100%)" }} />
-        <div style={{ position: "absolute", bottom: -100, right: -100, width: 400, height: 400, borderRadius: "50%", background: p, opacity: 0.06 }} />
+        <div aria-hidden="true" style={{ position: "absolute", top: 0, right: 0, width: "45%", height: "100%", background: `linear-gradient(135deg, ${p} 0%, ${s} 100%)`, opacity: 0.12, clipPath: "polygon(30% 0%, 100% 0%, 100% 100%, 0% 100%)" }} />
+        <div aria-hidden="true" style={{ position: "absolute", bottom: -100, right: -100, width: 400, height: 400, borderRadius: "50%", background: p, opacity: 0.06 }} />
         {/* Subtle dot pattern for texture */}
-        <div style={{ position: "absolute", inset: 0, backgroundImage: `radial-gradient(${hexToRgba(p, 0.07)} 1px, transparent 1px)`, backgroundSize: "32px 32px" }} />
+        <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: `radial-gradient(${hexToRgba(p, 0.07)} 1px, transparent 1px)`, backgroundSize: "32px 32px" }} />
 
         {/* Logo */}
         <div style={{ fontFamily: "var(--font-inter)", fontSize: 18, fontWeight: 800, color: "#fff", letterSpacing: "0.08em", marginBottom: 96, position: "relative", zIndex: 1 }}>
@@ -114,7 +114,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
         </div>
 
         {/* Tagline (Assertion headline - Garner & Alley 2013) */}
-        <h1 style={{ fontFamily: "var(--font-inter)", fontSize: 52, fontWeight: 900, color: "#fff", lineHeight: 1.15, letterSpacing: "-0.03em", marginBottom: 24, position: "relative", zIndex: 1, whiteSpace: "pre-line" }}>
+        <h1 style={{ fontFamily: "var(--font-inter)", fontSize: 52, fontWeight: 900, color: "#fff", lineHeight: 1.15, letterSpacing: "-0.03em", marginBottom: 24, position: "relative", zIndex: 1, whiteSpace: "pre-line", overflowWrap: "break-word", wordBreak: "break-word" }}>
           {data.tagline}
         </h1>
 
@@ -131,14 +131,14 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
                 <div style={{ fontFamily: "var(--font-inter)", fontSize: 28, fontWeight: 800, color: p, lineHeight: 1 }}>
                   {stat.value}<span style={{ fontSize: 14, fontWeight: 400, opacity: 0.7 }}>{stat.unit}</span>
                 </div>
-                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 4, fontWeight: 500 }}>{stat.label}</div>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", marginTop: 4, fontWeight: 500 }}>{stat.label}</div>
               </div>
             ))}
           </div>
         )}
 
         {/* Footer line */}
-        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", position: "relative", zIndex: 1 }}>
+        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", position: "relative", zIndex: 1 }}>
           {data.companyName}｜会社紹介資料｜{coverDate}
         </p>
       </div>
@@ -154,8 +154,8 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
 
           {/* Mission hero block */}
           <div style={{ background: `linear-gradient(135deg, ${p} 0%, ${s} 100%)`, borderRadius: 16, padding: "36px 40px", color: "#fff", position: "relative", overflow: "hidden", marginBottom: 24 }}>
-            <div style={{ position: "absolute", top: -60, right: -60, width: 200, height: 200, borderRadius: "50%", background: "rgba(255,255,255,0.08)" }} />
-            <div style={{ position: "absolute", bottom: -40, left: -40, width: 120, height: 120, borderRadius: "50%", background: "rgba(255,255,255,0.05)" }} />
+            <div aria-hidden="true" style={{ position: "absolute", top: -60, right: -60, width: 200, height: 200, borderRadius: "50%", background: "rgba(255,255,255,0.08)" }} />
+            <div aria-hidden="true" style={{ position: "absolute", bottom: -40, left: -40, width: 120, height: 120, borderRadius: "50%", background: "rgba(255,255,255,0.05)" }} />
             <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase" as const, opacity: 0.6, marginBottom: 16 }}>Our Mission</div>
             <div style={{ fontFamily: "var(--font-inter)", fontSize: 28, fontWeight: 800, lineHeight: 1.4, whiteSpace: "pre-line", position: "relative", zIndex: 1 }}>{data.mission}</div>
           </div>
@@ -186,8 +186,8 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
             ))}
           </div>
 
-          <div style={{ position: "absolute", bottom: 24, left: 52, fontSize: 10, color: "#94A3B8", fontWeight: 600 }}>{data.logoText}</div>
-          <div style={{ position: "absolute", bottom: 24, right: 52, fontSize: 12, color: "#94A3B8", fontWeight: 500 }}>02</div>
+          <div style={{ position: "absolute", bottom: 24, left: 52, fontSize: 10, color: "#64748B", fontWeight: 600 }}>{data.logoText}</div>
+          <div style={{ position: "absolute", bottom: 24, right: 52, fontSize: 12, color: "#64748B", fontWeight: 500 }}>02</div>
         </div>
       </div>
 
@@ -209,7 +209,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
                     <div style={{ width: 36, height: 36, borderRadius: 8, background: hexToRgba(p, 0.1), display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 8px" }}>
                       {metricIcons[i % 4](p, 18)}
                     </div>
-                    <div style={{ fontSize: 10, color: "#94A3B8", fontWeight: 600, marginBottom: 4, letterSpacing: "0.05em" }}>{item.label}</div>
+                    <div style={{ fontSize: 10, color: "#64748B", fontWeight: 600, marginBottom: 4, letterSpacing: "0.05em" }}>{item.label}</div>
                     <div style={{ fontSize: 15, fontWeight: 800, color: "#1E293B", lineHeight: 1.3 }}>{item.value}</div>
                   </div>
                 );
@@ -242,8 +242,8 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
             </div>
           </div>
 
-          <div style={{ position: "absolute", bottom: 24, left: 52, fontSize: 10, color: "#94A3B8", fontWeight: 600 }}>{data.logoText}</div>
-          <div style={{ position: "absolute", bottom: 24, right: 52, fontSize: 12, color: "#94A3B8", fontWeight: 500 }}>03</div>
+          <div style={{ position: "absolute", bottom: 24, left: 52, fontSize: 10, color: "#64748B", fontWeight: 600 }}>{data.logoText}</div>
+          <div style={{ position: "absolute", bottom: 24, right: 52, fontSize: 12, color: "#64748B", fontWeight: 500 }}>03</div>
         </div>
       </div>
 
@@ -286,8 +286,8 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
             })}
           </div>
 
-          <div style={{ position: "absolute", bottom: 24, left: 52, fontSize: 10, color: "#94A3B8", fontWeight: 600 }}>{data.logoText}</div>
-          <div style={{ position: "absolute", bottom: 24, right: 52, fontSize: 12, color: "#94A3B8", fontWeight: 500 }}>04</div>
+          <div style={{ position: "absolute", bottom: 24, left: 52, fontSize: 10, color: "#64748B", fontWeight: 600 }}>{data.logoText}</div>
+          <div style={{ position: "absolute", bottom: 24, right: 52, fontSize: 12, color: "#64748B", fontWeight: 500 }}>04</div>
         </div>
       </div>
 
@@ -321,9 +321,9 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
               {data.stats.slice(3).map((stat, i) => (
                 <div key={i} style={{ textAlign: "center", padding: "20px 12px", borderRadius: 12, background: "#FAFAFA" }}>
                   <div style={{ fontFamily: "var(--font-inter)", fontSize: 32, fontWeight: 800, color: "#334155", lineHeight: 1 }}>
-                    {stat.value}<span style={{ fontSize: 14, fontWeight: 400, color: "#94A3B8" }}>{stat.unit}</span>
+                    {stat.value}<span style={{ fontSize: 14, fontWeight: 400, color: "#64748B" }}>{stat.unit}</span>
                   </div>
-                  <div style={{ fontSize: 11, color: "#94A3B8", marginTop: 6, fontWeight: 500 }}>{stat.label}</div>
+                  <div style={{ fontSize: 11, color: "#64748B", marginTop: 6, fontWeight: 500 }}>{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -331,16 +331,16 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
 
           {/* Client logos */}
           <div style={{ borderTop: "1px solid #E2E8F0", paddingTop: 32 }}>
-            <div style={{ fontSize: 11, color: "#94A3B8", marginBottom: 20, textAlign: "center", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" as const }}>Trusted by Leading Companies</div>
+            <div style={{ fontSize: 11, color: "#64748B", marginBottom: 20, textAlign: "center", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" as const }}>Trusted by Leading Companies</div>
             <div style={{ display: "flex", justifyContent: "center", gap: 24, flexWrap: "wrap" }}>
               {data.clientLogos.map((logo, i) => (
-                <div key={i} style={{ width: 110, height: 48, background: "#F8FAFC", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, color: "#94A3B8", fontWeight: 700, letterSpacing: "0.05em", border: "1px solid #F1F5F9" }}>{logo}</div>
+                <div key={i} style={{ width: 110, height: 48, background: "#F8FAFC", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, color: "#64748B", fontWeight: 700, letterSpacing: "0.05em", border: "1px solid #F1F5F9" }}>{logo}</div>
               ))}
             </div>
           </div>
 
-          <div style={{ position: "absolute", bottom: 24, left: 52, fontSize: 10, color: "#94A3B8", fontWeight: 600 }}>{data.logoText}</div>
-          <div style={{ position: "absolute", bottom: 24, right: 52, fontSize: 12, color: "#94A3B8", fontWeight: 500 }}>05</div>
+          <div style={{ position: "absolute", bottom: 24, left: 52, fontSize: 10, color: "#64748B", fontWeight: 600 }}>{data.logoText}</div>
+          <div style={{ position: "absolute", bottom: 24, right: 52, fontSize: 12, color: "#64748B", fontWeight: 500 }}>05</div>
         </div>
       </div>
 
@@ -389,8 +389,8 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
             </div>
           )}
 
-          <div style={{ position: "absolute", bottom: 24, left: 52, fontSize: 10, color: "#94A3B8", fontWeight: 600 }}>{data.logoText}</div>
-          <div style={{ position: "absolute", bottom: 24, right: 52, fontSize: 12, color: "#94A3B8", fontWeight: 500 }}>06</div>
+          <div style={{ position: "absolute", bottom: 24, left: 52, fontSize: 10, color: "#64748B", fontWeight: 600 }}>{data.logoText}</div>
+          <div style={{ position: "absolute", bottom: 24, right: 52, fontSize: 12, color: "#64748B", fontWeight: 500 }}>06</div>
         </div>
       </div>
 
@@ -450,8 +450,8 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
             </div>
           </div>
 
-          <div style={{ position: "absolute", bottom: 24, left: 52, fontSize: 10, color: "#94A3B8", fontWeight: 600 }}>{data.logoText}</div>
-          <div style={{ position: "absolute", bottom: 24, right: 52, fontSize: 12, color: "#94A3B8", fontWeight: 500 }}>07</div>
+          <div style={{ position: "absolute", bottom: 24, left: 52, fontSize: 10, color: "#64748B", fontWeight: 600 }}>{data.logoText}</div>
+          <div style={{ position: "absolute", bottom: 24, right: 52, fontSize: 12, color: "#64748B", fontWeight: 500 }}>07</div>
         </div>
       </div>
 
@@ -461,8 +461,8 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
           contact icons for visual anchoring */}
       <div className="profile-page" style={{ ...pageStyle, background: "#0F172A", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "80px 72px" }}>
         {/* Decorative elements matching P1 */}
-        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${p} 0%, transparent 70%)`, opacity: 0.08 }} />
-        <div style={{ position: "absolute", inset: 0, backgroundImage: `radial-gradient(${hexToRgba(p, 0.06)} 1px, transparent 1px)`, backgroundSize: "32px 32px" }} />
+        <div aria-hidden="true" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${p} 0%, transparent 70%)`, opacity: 0.08 }} />
+        <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: `radial-gradient(${hexToRgba(p, 0.06)} 1px, transparent 1px)`, backgroundSize: "32px 32px" }} />
 
         {/* Social proof avatars */}
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 48, position: "relative", zIndex: 1 }}>

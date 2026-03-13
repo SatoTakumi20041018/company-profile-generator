@@ -1,19 +1,51 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { CompanyDataContext } from "./lib/store";
 import type { CompanyData } from "./lib/types";
 import { defaultCompanyData } from "./lib/types";
 import FormEditor from "./components/FormEditor";
 import ProfileRenderer from "./components/ProfileRenderer";
 
+const STORAGE_KEY = "company-profile-data";
+
+function loadSavedData(): CompanyData {
+  if (typeof window === "undefined") return defaultCompanyData;
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return { ...defaultCompanyData, ...JSON.parse(saved) };
+  } catch {}
+  return defaultCompanyData;
+}
+
 export default function Home() {
   const [data, setData] = useState<CompanyData>(defaultCompanyData);
   const [showForm, setShowForm] = useState(true);
+  const [hydrated, setHydrated] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    setData(loadSavedData());
+    setHydrated(true);
+  }, []);
+
+  // Save to localStorage on change
+  useEffect(() => {
+    if (hydrated) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+  }, [data, hydrated]);
 
   const handlePrint = useCallback(() => {
     window.print();
+  }, []);
+
+  const handleReset = useCallback(() => {
+    if (window.confirm("データをリセットしますか？この操作は取り消せません。")) {
+      setData(defaultCompanyData);
+      localStorage.removeItem(STORAGE_KEY);
+    }
   }, []);
 
   return (
@@ -30,6 +62,12 @@ export default function Home() {
               <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-semibold">認知科学ベース</span>
             </div>
             <div className="flex items-center gap-3">
+              <button
+                onClick={handleReset}
+                className="text-xs font-medium text-red-500 hover:text-red-700 px-3 py-1.5 rounded-lg hover:bg-red-50 transition"
+              >
+                リセット
+              </button>
               <button
                 onClick={() => setShowForm(!showForm)}
                 className="text-xs font-medium text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition"
