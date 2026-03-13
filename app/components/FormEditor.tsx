@@ -2,7 +2,70 @@
 
 import { useCompanyData } from "../lib/store";
 import type { CompanyData } from "../lib/types";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+
+// Parse unstructured Japanese company text into structured data
+function parseCompanyText(text: string): Partial<CompanyData> {
+  const result: Partial<CompanyData> = {};
+  const overview: { label: string; value: string }[] = [];
+  const normalized = text.replace(/\r\n/g, "\n");
+
+  const extract = (patterns: RegExp[]): string | null => {
+    for (const p of patterns) {
+      const match = normalized.match(p);
+      if (match) return match[1].trim();
+    }
+    return null;
+  };
+
+  // Company name
+  const companyName = extract([
+    /(?:会社名|社名|商号|法人名)[：:・\s]\s*(.+)/m,
+  ]);
+  if (companyName) {
+    result.companyName = companyName;
+    result.logoText = companyName.replace(/株式会社|合同会社|有限会社/g, "").trim();
+  }
+
+  // Overview items
+  const overviewDefs: [string, RegExp[]][] = [
+    ["会社名", [/(?:会社名|社名|商号)[：:・\s]\s*(.+)/m]],
+    ["代表者", [/(?:代表者?|代表取締役|CEO)[：:・\s]\s*(.+)/m]],
+    ["設立", [/設立[：:・\s]\s*(.+)/m]],
+    ["資本金", [/資本金[：:・\s]\s*(.+)/m]],
+    ["従業員数", [/従業員(?:数)?[：:・\s]\s*(.+)/m]],
+    ["所在地", [/(?:所在地|住所|本社所在地|本社)[：:・\s]\s*(.+)/m]],
+    ["事業内容", [/事業(?:内容)?[：:・\s]\s*(.+)/m]],
+    ["売上高", [/売上(?:高)?[：:・\s]\s*(.+)/m]],
+  ];
+
+  for (const [label, patterns] of overviewDefs) {
+    const value = extract(patterns);
+    if (value) overview.push({ label, value });
+  }
+  if (overview.length > 0) result.overview = overview;
+
+  // Mission / Vision
+  const mission = extract([/(?:ミッション|Mission)[：:・\s]\s*(.+)/mi]);
+  if (mission) result.mission = mission;
+  const vision = extract([/(?:ビジョン|Vision)[：:・\s]\s*(.+)/mi]);
+  if (vision) result.vision = vision;
+
+  // Contact
+  const phone = extract([/(?:電話|TEL|Tel|℡)[：:・\s]*([0-9\-()（）]+)/m]);
+  if (phone) result.contactPhone = phone;
+  const email = extract([
+    /(?:メール|E-?mail|Mail)[：:・\s]*(\S+@\S+)/mi,
+    /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/,
+  ]);
+  if (email) result.contactEmail = email;
+  const web = extract([
+    /(?:URL|Web|HP|ホームページ|ウェブ|サイト)[：:・\s]*(https?:\/\/\S+|\S+\.\S+)/mi,
+  ]);
+  if (web) result.contactWeb = web;
+
+  return result;
+}
 
 function Section({ title, children, onAdd }: { title: string; children: React.ReactNode; onAdd?: () => void }) {
   return (
@@ -57,6 +120,9 @@ function RemoveButton({ onClick }: { onClick: () => void }) {
 export default function FormEditor() {
   const { data, setData } = useCompanyData();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const bulkFileRef = useRef<HTMLInputElement>(null);
+  const [bulkText, setBulkText] = useState("");
+  const [parseResult, setParseResult] = useState<string | null>(null);
 
   function update(partial: Partial<CompanyData>) {
     setData({ ...data, ...partial });
@@ -104,6 +170,33 @@ export default function FormEditor() {
     update({ orgStats });
   }
 
+  // Parse bulk text
+  function handleParse() {
+    if (!bulkText.trim()) return;
+    const parsed = parseCompanyText(bulkText);
+    const fields = Object.keys(parsed);
+    if (fields.length === 0) {
+      setParseResult("解析できる情報が見つかりませんでした。「項目名：値」の形式で入力してください。");
+      return;
+    }
+    setData({ ...data, ...parsed });
+    setParseResult(`${fields.length}件の項目を検出して入力しました。`);
+    setTimeout(() => setParseResult(null), 4000);
+  }
+
+  // Load text file for bulk input
+  function handleBulkFileLoad(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const text = ev.target?.result as string;
+      if (text) setBulkText(text);
+    };
+    reader.readAsText(file);
+    if (bulkFileRef.current) bulkFileRef.current.value = "";
+  }
+
   // Export JSON
   function handleExport() {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
@@ -134,6 +227,38 @@ export default function FormEditor() {
 
   return (
     <div className="p-6 overflow-y-auto h-full">
+      {/* Bulk text auto-parse */}
+      <Section title="テキストから自動入力">
+        <textarea
+          className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition"
+          rows={6}
+          value={bulkText}
+          onChange={(e) => setBulkText(e.target.value)}
+          placeholder={"会社名：株式会社○○\n代表者：山田太郎\n設立：2020年4月\n資本金：1,000万円\n従業員数：50名\n所在地：東京都渋谷区...\n電話：03-1234-5678\nメール：info@example.com"}
+        />
+        <div className="flex gap-2">
+          <button
+            onClick={() => bulkFileRef.current?.click()}
+            className="flex-1 text-xs font-bold text-slate-600 border border-slate-200 rounded-lg px-3 py-2 hover:bg-slate-50 transition"
+          >
+            .txt 読み込み
+          </button>
+          <button
+            onClick={handleParse}
+            disabled={!bulkText.trim()}
+            className="flex-1 text-xs font-bold text-white bg-blue-600 rounded-lg px-3 py-2 hover:bg-blue-700 transition disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            解析して入力
+          </button>
+        </div>
+        <input ref={bulkFileRef} type="file" accept=".txt,.text" onChange={handleBulkFileLoad} className="hidden" />
+        {parseResult && (
+          <div className="text-xs text-green-600 bg-green-50 px-3 py-2 rounded-lg">
+            {parseResult}
+          </div>
+        )}
+      </Section>
+
       {/* Import/Export */}
       <div className="mb-6 flex gap-2">
         <button onClick={handleExport} className="flex-1 text-xs font-bold text-slate-600 border border-slate-200 rounded-lg px-3 py-2 hover:bg-slate-50 transition">
@@ -147,8 +272,7 @@ export default function FormEditor() {
 
       <Section title="テーマカラー">
         <div className="flex gap-4">
-          <ColorField label="プライマリー" value={data.primaryColor} onChange={(v) => update({ primaryColor: v })} />
-          <ColorField label="セカンダリー" value={data.secondaryColor} onChange={(v) => update({ secondaryColor: v })} />
+          <ColorField label="アクセントカラー" value={data.primaryColor} onChange={(v) => update({ primaryColor: v })} />
         </div>
       </Section>
 
