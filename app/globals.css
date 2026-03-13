@@ -27,9 +27,14 @@ body {
   .no-print { display: none !important; }
   .profile-page {
     page-break-before: always;
+    page-break-inside: avoid;
     margin: 0 !important;
     box-shadow: none !important;
+    overflow: hidden !important;
   }
   .profile-page:first-child { page-break-before: auto; }
   @page { size: A4 portrait; margin: 0; }
+  table { page-break-inside: auto; }
+  tr { page-break-inside: avoid; }
+  .card-no-break { page-break-inside: avoid; }
 }
