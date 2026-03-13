@@ -18,6 +18,16 @@ body {
   font-family: var(--font-noto), var(--font-inter), sans-serif;
 }
 
+/* Focus indicators for keyboard navigation (WCAG 2.1 AA) */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid #2563EB;
+  outline-offset: 2px;
+}
+
 @media print {
   body {
     background: white !important;

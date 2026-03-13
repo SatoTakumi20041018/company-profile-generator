@@ -116,7 +116,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
 
         {/* Logo */}
         <div style={{ fontFamily: "var(--font-inter)", fontSize: 18, fontWeight: 800, color: "#fff", letterSpacing: "0.08em", marginBottom: 96, position: "relative", zIndex: 1 }}>
-          <span style={{ color: p, fontSize: 24 }}>{data.logoText.charAt(0)}</span>{data.logoText.slice(1)}
+          <span style={{ color: p, fontSize: 24 }}>{(data.logoText || "C").charAt(0)}</span>{data.logoText.slice(1)}
         </div>
 
         {/* Tagline (Assertion headline - Garner & Alley 2013) */}
@@ -181,9 +181,9 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" as const, color: p, marginBottom: 16 }}>Our Values</div>
           <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.max(data.values.length, 2)}, 1fr)`, gap: 16 }}>
             {data.values.map((v, i) => (
-              <div key={i} style={{ background: "#F8FAFC", borderRadius: 12, padding: "20px 16px", textAlign: "center", border: "1px solid #E2E8F0", position: "relative" }}>
+              <div key={i} className="card-no-break" style={{ background: "#F8FAFC", borderRadius: 12, padding: "20px 16px", textAlign: "center", border: "1px solid #E2E8F0", position: "relative" }}>
                 <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 40, height: 3, background: p, borderRadius: "0 0 4px 4px" }} />
-                <div style={{ width: 44, height: 44, borderRadius: "50%", background: hexToRgba(p, 0.1), display: "flex", alignItems: "center", justifyContent: "center", margin: "8px auto 12px" }}>
+                <div style={{ width: 40, height: 40, borderRadius: "50%", background: hexToRgba(p, 0.1), display: "flex", alignItems: "center", justifyContent: "center", margin: "8px auto 12px" }}>
                   {[Icons.bolt, Icons.shield, Icons.clock][i % 3](p, 20)}
                 </div>
                 <div style={{ fontFamily: "var(--font-inter)", fontWeight: 800, fontSize: 16, marginBottom: 6, color: "#1E293B" }}>{v.name}</div>
@@ -229,8 +229,8 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
               <tbody>
                 {data.overview.map((item, i) => (
                   <tr key={i} style={{ borderBottom: i < data.overview.length - 1 ? "1px solid #E2E8F0" : "none" }}>
-                    <th style={{ textAlign: "left", padding: "14px 20px", fontSize: 12, fontWeight: 700, color: "#64748B", width: 120, verticalAlign: "top", background: "rgba(255,255,255,0.5)" }}>{item.label}</th>
-                    <td style={{ padding: "14px 20px", fontSize: 12, lineHeight: 1.6, color: "#1E293B" }}>{item.value}</td>
+                    <th style={{ textAlign: "left", padding: "12px 20px", fontSize: 12, fontWeight: 700, color: "#64748B", width: 120, verticalAlign: "top", background: "rgba(255,255,255,0.5)" }}>{item.label}</th>
+                    <td style={{ padding: "12px 20px", fontSize: 12, lineHeight: 1.6, color: "#1E293B" }}>{item.value}</td>
                   </tr>
                 ))}
               </tbody>
@@ -240,7 +240,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
           {/* Company identity anchor */}
           <div style={{ marginTop: 32, display: "flex", alignItems: "center", gap: 16, padding: "20px 24px", background: `linear-gradient(135deg, ${hexToRgba(p, 0.04)} 0%, ${hexToRgba(s, 0.04)} 100%)`, borderRadius: 12, border: `1px solid ${hexToRgba(p, 0.1)}` }}>
             <div style={{ width: 48, height: 48, borderRadius: 12, background: `linear-gradient(135deg, ${p} 0%, ${s} 100%)`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <span style={{ color: "#fff", fontFamily: "var(--font-inter)", fontSize: 20, fontWeight: 900 }}>{data.logoText.charAt(0)}</span>
+              <span style={{ color: "#fff", fontFamily: "var(--font-inter)", fontSize: 20, fontWeight: 900 }}>{(data.logoText || "C").charAt(0)}</span>
             </div>
             <div>
               <div style={{ fontSize: 14, fontWeight: 700, color: "#1E293B", marginBottom: 2 }}>{data.companyName}</div>
@@ -268,7 +268,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
               const accent = accentColors[i % 4];
               const icon = serviceIcons[i % 4];
               return (
-                <div key={i} className="card-no-break" style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 14, padding: "28px 24px", position: "relative", overflow: "hidden" }}>
+                <div key={i} className="card-no-break" style={{ background: "#fff", border: "1px solid #E2E8F0", borderRadius: 12, padding: "28px 24px", position: "relative", overflow: "hidden" }}>
                   {/* Top accent bar */}
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${accent}, ${hexToRgba(accent, 0.3)})` }} />
                   {/* Number + Icon row */}
@@ -276,7 +276,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
                     <div style={{ fontFamily: "var(--font-inter)", fontSize: 32, fontWeight: 900, color: hexToRgba(accent, 0.12), lineHeight: 1 }}>
                       {String(i + 1).padStart(2, "0")}
                     </div>
-                    <div style={{ width: 44, height: 44, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", background: hexToRgba(accent, 0.08) }}>
+                    <div style={{ width: 40, height: 40, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", background: hexToRgba(accent, 0.08) }}>
                       {icon(accent)}
                     </div>
                   </div>
@@ -305,7 +305,7 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
         <div style={{ padding: "48px 52px" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" as const, color: p, marginBottom: 8 }}>Track Record</div>
-            <h2 style={{ fontFamily: "var(--font-inter)", fontSize: 28, fontWeight: 800 }}>数字で見る{data.companyName.replace(/株式会社/, "")}</h2>
+            <h2 style={{ fontFamily: "var(--font-inter)", fontSize: 28, fontWeight: 800 }}>数字で見る{data.companyName?.replace(/株式会社/, "") || "当社"}</h2>
           </div>
 
           {/* Primary stats (top 3) */}
@@ -380,9 +380,9 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
 
           {/* Org stats */}
           {data.orgStats.length > 0 && (
-            <div style={{ background: `linear-gradient(135deg, ${hexToRgba(p, 0.04)} 0%, ${hexToRgba(s, 0.04)} 100%)`, borderRadius: 14, padding: "24px 32px", border: `1px solid ${hexToRgba(p, 0.08)}` }}>
+            <div style={{ background: `linear-gradient(135deg, ${hexToRgba(p, 0.04)} 0%, ${hexToRgba(s, 0.04)} 100%)`, borderRadius: 12, padding: "24px 32px", border: `1px solid ${hexToRgba(p, 0.08)}` }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" as const, color: p, marginBottom: 16, textAlign: "center" }}>Organization Data</div>
-              <div style={{ display: "grid", gridTemplateColumns: `repeat(${data.orgStats.length}, 1fr)`, gap: 16 }}>
+              <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(data.orgStats.length, 4)}, 1fr)`, gap: 16 }}>
                 {data.orgStats.map((stat, i) => (
                   <div key={i} style={{ textAlign: "center" }}>
                     <div style={{ fontFamily: "var(--font-inter)", fontSize: 28, fontWeight: 900, color: p, lineHeight: 1 }}>
@@ -492,10 +492,10 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
         </p>
 
         {/* CTA Button with gradient */}
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: `linear-gradient(135deg, ${p} 0%, ${s} 100%)`, color: "#fff", fontFamily: "var(--font-inter)", fontSize: 14, fontWeight: 700, padding: "16px 40px", borderRadius: 9999, position: "relative", zIndex: 1, letterSpacing: "0.02em", cursor: "pointer" }}>
+        <button type="button" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: `linear-gradient(135deg, ${p} 0%, ${s} 100%)`, color: "#fff", fontFamily: "var(--font-inter)", fontSize: 14, fontWeight: 700, padding: "16px 40px", borderRadius: 9999, position: "relative", zIndex: 1, letterSpacing: "0.02em", cursor: "pointer", border: "none" }}>
           {data.ctaButtonText}
           <span style={{ marginLeft: 4, display: "inline-flex" }}>{Icons.arrowRight("#fff", 16)}</span>
-        </div>
+        </button>
 
         {/* Contact info with icons */}
         <div style={{ display: "flex", gap: 40, marginTop: 56, position: "relative", zIndex: 1 }}>
@@ -506,9 +506,9 @@ export default function ProfileRenderer({ data }: { data: CompanyData }) {
           ].map((c, i) => (
             <div key={i} style={{ textAlign: "center" }}>
               <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
-                {c.icon("rgba(255,255,255,0.3)", 16)}
+                {c.icon("rgba(255,255,255,0.55)", 16)}
               </div>
-              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 4 }}>{c.label}</div>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.55)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 4 }}>{c.label}</div>
               <div style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>{c.value}</div>
             </div>
           ))}
