@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { extractText } from "unpdf";
 
 export async function POST(req: NextRequest) {
   try {
@@ -8,13 +9,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "ファイルが必要です" }, { status: 400 });
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
+    const buffer = new Uint8Array(await file.arrayBuffer());
+    const { text } = await extractText(buffer, { mergePages: true });
 
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const pdfParse = require("pdf-parse");
-    const parsed = await pdfParse(buffer);
-
-    return NextResponse.json({ text: parsed.text || "" });
+    return NextResponse.json({ text: text || "" });
   } catch (e) {
     const message = e instanceof Error ? e.message : "不明なエラー";
     return NextResponse.json({ error: `PDF解析に失敗: ${message}` }, { status: 500 });
