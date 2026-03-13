@@ -49,7 +49,24 @@ function UploadScreen({ onComplete }: { onComplete: (data: CompanyData) => void 
     }
   }
 
-  function handleFile(file: File) {
+  async function handleFile(file: File) {
+    if (file.name.endsWith(".pdf")) {
+      setLoading(true);
+      setError(null);
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        const res = await fetch("/api/parse-pdf", { method: "POST", body: formData });
+        const json = await res.json();
+        if (!res.ok) { setError(json.error); setLoading(false); return; }
+        setText(json.text);
+        await parseText(json.text);
+      } catch {
+        setError("PDF解析に失敗しました");
+        setLoading(false);
+      }
+      return;
+    }
     const reader = new FileReader();
     reader.onload = (ev) => {
       const content = ev.target?.result as string;
@@ -127,12 +144,12 @@ function UploadScreen({ onComplete }: { onComplete: (data: CompanyData) => void 
             ファイルをドラッグ＆ドロップ、またはクリックして選択
           </div>
           <div className="text-xs text-slate-400">
-            .txt .md .html .csv 対応 — 会社概要、商品情報、事業説明など
+            .pdf .txt .md .html .csv 対応 — 会社概要、商品情報、事業説明など
           </div>
           <input
             ref={fileRef}
             type="file"
-            accept=".txt,.text,.md,.html,.htm,.csv"
+            accept=".pdf,.txt,.text,.md,.html,.htm,.csv"
             onChange={handleFileInput}
             className="hidden"
           />

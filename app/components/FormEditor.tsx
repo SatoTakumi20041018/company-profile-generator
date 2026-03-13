@@ -425,7 +425,7 @@ export default function FormEditor() {
             ファイル追加
           </button>
         </div>
-        <input ref={productFileRef} type="file" accept=".txt,.text,.html,.htm,.csv,.md" onChange={handleProductFileLoad} className="hidden" />
+        <input ref={productFileRef} type="file" accept=".pdf,.txt,.text,.html,.htm,.csv,.md" onChange={handleProductFileLoad} className="hidden" />
         {productUrlResult && (
           <div className={`text-[11px] px-2.5 py-1.5 rounded ${productUrlResult.includes("失敗") || productUrlResult.includes("エラー") ? "text-red-600 bg-red-50" : "text-emerald-600 bg-emerald-50"}`}>
             {productUrlResult}
