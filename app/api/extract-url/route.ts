@@ -3,25 +3,48 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const { url } = await req.json();
-    if (!url || typeof url !== "string") {
+    if (!url || typeof url !== "string" || !url.trim()) {
       return NextResponse.json({ error: "URLが必要です" }, { status: 400 });
+    }
+
+    const trimmedUrl = url.trim();
+
+    // Reject obviously invalid URLs
+    if (trimmedUrl.length < 4 || /^(ftp|file|javascript|data):/i.test(trimmedUrl)) {
+      return NextResponse.json({ error: "無効なURLです" }, { status: 400 });
+    }
+
+    // Must contain a dot (domain) or be localhost
+    if (!trimmedUrl.includes(".") && !trimmedUrl.includes("localhost")) {
+      return NextResponse.json({ error: "無効なURLです" }, { status: 400 });
     }
 
     // Validate URL
     let parsedUrl: URL;
     try {
-      parsedUrl = new URL(url.startsWith("http") ? url : `https://${url}`);
+      parsedUrl = new URL(trimmedUrl.startsWith("http") ? trimmedUrl : `https://${trimmedUrl}`);
     } catch {
       return NextResponse.json({ error: "無効なURLです" }, { status: 400 });
     }
 
-    const res = await fetch(parsedUrl.toString(), {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; CompanyProfileBot/1.0)",
-        Accept: "text/html,application/xhtml+xml",
-      },
-      signal: AbortSignal.timeout(10000),
-    });
+    // Reject localhost on port 0/1 and 0.0.0.0
+    if (parsedUrl.hostname === "0.0.0.0" || (parsedUrl.port && parseInt(parsedUrl.port) <= 1)) {
+      return NextResponse.json({ error: "無効なURLです" }, { status: 400 });
+    }
+
+    let res: Response;
+    try {
+      res = await fetch(parsedUrl.toString(), {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (compatible; CompanyProfileBot/1.0)",
+          Accept: "text/html,application/xhtml+xml",
+        },
+        signal: AbortSignal.timeout(10000),
+      });
+    } catch (fetchErr) {
+      const msg = fetchErr instanceof Error ? fetchErr.message : "接続失敗";
+      return NextResponse.json({ error: `取得失敗: ${msg}` }, { status: 502 });
+    }
 
     if (!res.ok) {
       return NextResponse.json({ error: `取得失敗: ${res.status}` }, { status: 502 });

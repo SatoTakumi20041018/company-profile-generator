@@ -12,6 +12,117 @@ const STARTED_KEY = "company-profile-started";
 const ZOOM_STEPS = [0.35, 0.5, 0.65, 0.8, 1.0];
 const DEFAULT_ZOOM_INDEX = 1;
 
+function ConfirmationScreen({
+  data,
+  onConfirm,
+  onBack,
+}: {
+  data: CompanyData;
+  onConfirm: () => void;
+  onBack: () => void;
+}) {
+  const sections: { label: string; content: string | null }[] = [];
+
+  if (data.companyName && data.companyName !== defaultCompanyData.companyName) {
+    sections.push({ label: "会社名", content: data.companyName });
+  }
+  if (data.tagline && data.tagline !== defaultCompanyData.tagline) {
+    sections.push({ label: "キャッチコピー", content: data.tagline.replace(/\n/g, " ") });
+  }
+  if (data.mission && data.mission !== defaultCompanyData.mission) {
+    sections.push({ label: "ミッション", content: data.mission.replace(/\n/g, " ") });
+  }
+  if (data.vision && data.vision !== defaultCompanyData.vision) {
+    sections.push({ label: "ビジョン", content: data.vision });
+  }
+  if (data.overview && data.overview.length > 0) {
+    const overviewText = data.overview.map((o) => `${o.label}：${o.value}`).join("\n");
+    sections.push({ label: "会社概要", content: overviewText });
+  }
+  if (data.services && data.services.length > 0 && data.services[0].title !== defaultCompanyData.services[0]?.title) {
+    sections.push({ label: "サービス", content: data.services.map((s) => s.title + (s.description ? `（${s.description}）` : "")).join("\n") });
+  }
+  if (data.products && data.products.length > 0 && data.products[0].name !== defaultCompanyData.products[0]?.name) {
+    sections.push({ label: "商品・プロダクト", content: data.products.map((p) => p.name + (p.price ? ` - ${p.price}` : "") + (p.description ? `：${p.description}` : "")).join("\n") });
+  }
+  if (data.stats && data.stats.length > 0 && data.stats[0].value !== defaultCompanyData.stats[0]?.value) {
+    sections.push({ label: "数値実績", content: data.stats.map((s) => `${s.label}：${s.value}${s.unit}`).join("、") });
+  }
+  if (data.team && data.team.length > 0 && data.team[0].name !== defaultCompanyData.team[0]?.name) {
+    sections.push({ label: "チーム", content: data.team.map((t) => `${t.name}（${t.role}）`).join("、") });
+  }
+  if (data.timeline && data.timeline.length > 0 && data.timeline[0].year !== defaultCompanyData.timeline[0]?.year) {
+    sections.push({ label: "沿革", content: data.timeline.map((t) => `${t.year} ${t.title}`).join("\n") });
+  }
+  if (data.contactPhone && data.contactPhone !== defaultCompanyData.contactPhone) {
+    sections.push({ label: "電話", content: data.contactPhone });
+  }
+  if (data.contactEmail && data.contactEmail !== defaultCompanyData.contactEmail) {
+    sections.push({ label: "メール", content: data.contactEmail });
+  }
+  if (data.contactWeb && data.contactWeb !== defaultCompanyData.contactWeb) {
+    sections.push({ label: "Web", content: data.contactWeb });
+  }
+
+  const hasExtracted = sections.length > 0;
+
+  return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+      <div className="max-w-2xl w-full">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-100 rounded-full mb-4">
+            <svg className="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h1 className="text-xl font-bold text-slate-800 mb-2">
+            {hasExtracted ? "以下の会社概要で間違いないですか？" : "情報を抽出できませんでした"}
+          </h1>
+          <p className="text-sm text-slate-500">
+            {hasExtracted
+              ? "AIが読み取った内容を確認してください。OKを押すと資料を生成します。"
+              : "サンプルデータで資料を生成するか、戻って別のデータを入力してください。"}
+          </p>
+        </div>
+
+        {hasExtracted && (
+          <div className="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100 mb-6">
+            {sections.map((sec, i) => (
+              <div key={i} className="px-5 py-3">
+                <div className="text-[11px] font-semibold text-blue-600 uppercase tracking-wider mb-1">{sec.label}</div>
+                <div className="text-sm text-slate-700 whitespace-pre-line leading-relaxed">{sec.content}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {!hasExtracted && (
+          <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 mb-6">
+            <p className="text-sm text-amber-700">
+              入力データから会社情報を自動的に抽出できませんでした。サンプルデータをベースに、エディタで手動編集できます。
+            </p>
+          </div>
+        )}
+
+        <div className="flex gap-3">
+          <button
+            onClick={onBack}
+            className="flex-1 px-4 py-3 bg-white border border-slate-200 text-slate-600 text-sm font-semibold rounded-xl hover:bg-slate-50 transition"
+          >
+            戻って修正
+          </button>
+          <button
+            onClick={onConfirm}
+            className="flex-[2] px-4 py-3 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition"
+          >
+            {hasExtracted ? "この内容でOK — 資料を生成" : "サンプルデータで資料を生成"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function loadSavedData(): CompanyData | null {
   if (typeof window === "undefined") return null;
   try {
@@ -21,7 +132,7 @@ function loadSavedData(): CompanyData | null {
   return null;
 }
 
-function UploadScreen({ onComplete }: { onComplete: (data: CompanyData) => void }) {
+function UploadScreen({ onComplete, onSkip }: { onComplete: (data: CompanyData) => void; onSkip: () => void }) {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,32 +161,31 @@ function UploadScreen({ onComplete }: { onComplete: (data: CompanyData) => void 
   }
 
   async function handleFile(file: File) {
-    if (file.name.endsWith(".pdf")) {
-      setLoading(true);
-      setError(null);
-      try {
-        const formData = new FormData();
-        formData.append("file", file);
-        const res = await fetch("/api/parse-pdf", { method: "POST", body: formData });
-        const json = await res.json();
-        if (!res.ok) { setError(json.error); setLoading(false); return; }
-        setText(json.text);
-        await parseText(json.text);
-      } catch {
-        setError("PDF解析に失敗しました");
+    setLoading(true);
+    setError(null);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/parse-file", { method: "POST", body: formData });
+      const json = await res.json();
+      if (!res.ok || json.error) {
+        setError(json.error || "ファイル解析に失敗しました");
+        setLoading(false);
+        return;
+      }
+      const extractedText = json.text || "";
+      setText(extractedText);
+      if (extractedText.trim()) {
+        const isHtml = file.name.endsWith(".html") || file.name.endsWith(".htm");
+        await parseText(extractedText, isHtml ? "html" : "text");
+      } else {
+        setError("ファイルからテキストを抽出できませんでした");
         setLoading(false);
       }
-      return;
+    } catch {
+      setError("ファイル解析に失敗しました。もう一度お試しください。");
+      setLoading(false);
     }
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const content = ev.target?.result as string;
-      if (!content) return;
-      const isHtml = file.name.endsWith(".html") || file.name.endsWith(".htm");
-      setText(content);
-      parseText(content, isHtml ? "html" : "text");
-    };
-    reader.readAsText(file);
   }
 
   function handleDrop(e: React.DragEvent) {
@@ -144,12 +254,12 @@ function UploadScreen({ onComplete }: { onComplete: (data: CompanyData) => void 
             ファイルをドラッグ＆ドロップ、またはクリックして選択
           </div>
           <div className="text-xs text-slate-400">
-            .pdf .txt .md .html .csv 対応 — 会社概要、商品情報、事業説明など
+            .pdf .txt .md .html .csv .json .xml .yaml .docx .rtf 対応
           </div>
           <input
             ref={fileRef}
             type="file"
-            accept=".pdf,.txt,.text,.md,.html,.htm,.csv"
+            accept=".pdf,.txt,.text,.md,.html,.htm,.csv,.tsv,.json,.yaml,.yml,.xml,.rtf,.docx,.ini,.conf,.log"
             onChange={handleFileInput}
             className="hidden"
           />
@@ -207,7 +317,7 @@ function UploadScreen({ onComplete }: { onComplete: (data: CompanyData) => void 
         {/* Skip / Use sample data */}
         <div className="text-center">
           <button
-            onClick={() => onComplete(defaultCompanyData)}
+            onClick={onSkip}
             className="text-xs text-slate-400 hover:text-slate-600 underline transition"
           >
             サンプルデータで始める
@@ -223,6 +333,7 @@ export default function Home() {
   const [showForm, setShowForm] = useState(true);
   const [hydrated, setHydrated] = useState(false);
   const [started, setStarted] = useState(false);
+  const [pendingData, setPendingData] = useState<CompanyData | null>(null);
   const [zoomIdx, setZoomIdx] = useState(DEFAULT_ZOOM_INDEX);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -244,11 +355,28 @@ export default function Home() {
     }
   }, [data, hydrated, started]);
 
-  const handleComplete = useCallback((newData: CompanyData) => {
-    setData(newData);
+  const handleParsed = useCallback((newData: CompanyData) => {
+    setPendingData(newData);
+  }, []);
+
+  const handleConfirm = useCallback(() => {
+    const d = pendingData || defaultCompanyData;
+    setData(d);
+    setStarted(true);
+    setPendingData(null);
+    localStorage.setItem(STARTED_KEY, "1");
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+  }, [pendingData]);
+
+  const handleSkip = useCallback(() => {
+    setData(defaultCompanyData);
     setStarted(true);
     localStorage.setItem(STARTED_KEY, "1");
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultCompanyData));
+  }, []);
+
+  const handleBackToUpload = useCallback(() => {
+    setPendingData(null);
   }, []);
 
   const handlePrint = useCallback(() => { window.print(); }, []);
@@ -257,6 +385,7 @@ export default function Home() {
     if (window.confirm("データをリセットして最初からやり直しますか？")) {
       setData(defaultCompanyData);
       setStarted(false);
+      setPendingData(null);
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(STARTED_KEY);
     }
@@ -264,8 +393,18 @@ export default function Home() {
 
   if (!hydrated) return null;
 
+  if (!started && pendingData) {
+    return (
+      <ConfirmationScreen
+        data={pendingData}
+        onConfirm={handleConfirm}
+        onBack={handleBackToUpload}
+      />
+    );
+  }
+
   if (!started) {
-    return <UploadScreen onComplete={handleComplete} />;
+    return <UploadScreen onComplete={handleParsed} onSkip={handleSkip} />;
   }
 
   return (
