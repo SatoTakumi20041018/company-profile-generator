@@ -153,8 +153,13 @@ function UploadScreen({ onComplete, onSkip }: { onComplete: (data: CompanyData) 
       const json = await res.json();
       if (!res.ok) { setError(json.error); return; }
       onComplete(json.data);
-    } catch {
-      setError("解析に失敗しました。もう一度お試しください。");
+    } catch (e) {
+      const detail = e instanceof Error ? e.message : "";
+      if (detail.includes("Failed to fetch") || detail.includes("NetworkError")) {
+        setError("ネットワークエラーが発生しました。接続を確認してください。");
+      } else {
+        setError("テキストの解析中にエラーが発生しました。内容を確認してください。");
+      }
     } finally {
       setLoading(false);
     }
@@ -167,23 +172,38 @@ function UploadScreen({ onComplete, onSkip }: { onComplete: (data: CompanyData) 
       const formData = new FormData();
       formData.append("file", file);
       const res = await fetch("/api/parse-file", { method: "POST", body: formData });
-      const json = await res.json();
-      if (!res.ok || json.error) {
-        setError(json.error || "ファイル解析に失敗しました");
+      if (!res.ok) {
+        let msg = `サーバーエラー (${res.status})`;
+        try { const j = await res.json(); if (j.error) msg = j.error; } catch {}
+        setError(msg);
         setLoading(false);
         return;
       }
+      const json = await res.json();
+      // Even if parse-file returned an error (e.g. invalid PDF), try to use whatever text we got
       const extractedText = json.text || "";
       setText(extractedText);
       if (extractedText.trim()) {
         const isHtml = file.name.endsWith(".html") || file.name.endsWith(".htm");
         await parseText(extractedText, isHtml ? "html" : "text");
+      } else if (json.error) {
+        // File-specific error (e.g. "PDF解析失敗: Invalid PDF structure")
+        setError(`${file.name} の読み取りに失敗しました: ${json.error}`);
+        setLoading(false);
       } else {
-        setError("ファイルからテキストを抽出できませんでした");
+        // File was parsed but no text content
+        setError(`${file.name} からテキストを抽出できませんでした。別のファイルをお試しください。`);
         setLoading(false);
       }
-    } catch {
-      setError("ファイル解析に失敗しました。もう一度お試しください。");
+    } catch (e) {
+      const detail = e instanceof Error ? e.message : "";
+      if (detail.includes("Failed to fetch") || detail.includes("NetworkError")) {
+        setError("ネットワークエラーが発生しました。接続を確認してもう一度お試しください。");
+      } else if (detail.includes("timeout") || detail.includes("AbortError")) {
+        setError("ファイルの処理に時間がかかりすぎました。ファイルサイズを確認してください。");
+      } else {
+        setError(`${file.name} の処理中にエラーが発生しました。ファイル形式を確認してください。`);
+      }
       setLoading(false);
     }
   }
@@ -225,8 +245,13 @@ function UploadScreen({ onComplete, onSkip }: { onComplete: (data: CompanyData) 
         setError("URLから情報を抽出できませんでした");
         setLoading(false);
       }
-    } catch {
-      setError("URL取得に失敗しました");
+    } catch (e) {
+      const detail = e instanceof Error ? e.message : "";
+      if (detail.includes("Failed to fetch") || detail.includes("NetworkError")) {
+        setError("ネットワークエラーが発生しました。接続を確認してください。");
+      } else {
+        setError("URLからの情報取得中にエラーが発生しました。URLを確認してください。");
+      }
       setLoading(false);
     }
   }

@@ -29,7 +29,31 @@ function detectEncoding(buffer: Buffer): string {
   if (buffer[0] === 0xff && buffer[1] === 0xfe) return "utf-16le";
   if (buffer[0] === 0xfe && buffer[1] === 0xff) return "utf-16be";
 
-  // Shift-JIS detection heuristic
+  // Validate UTF-8 byte sequences first — if valid, it IS UTF-8
+  let isValidUtf8 = true;
+  let hasMultibyte = false;
+  for (let i = 0; i < buffer.length; i++) {
+    const b = buffer[i];
+    if (b <= 0x7f) continue;
+    hasMultibyte = true;
+    if (b >= 0xc2 && b <= 0xdf) {
+      if (i + 1 >= buffer.length || (buffer[i + 1] & 0xc0) !== 0x80) { isValidUtf8 = false; break; }
+      i++;
+    } else if (b >= 0xe0 && b <= 0xef) {
+      if (i + 2 >= buffer.length || (buffer[i + 1] & 0xc0) !== 0x80 || (buffer[i + 2] & 0xc0) !== 0x80) { isValidUtf8 = false; break; }
+      i += 2;
+    } else if (b >= 0xf0 && b <= 0xf4) {
+      if (i + 3 >= buffer.length || (buffer[i + 1] & 0xc0) !== 0x80 || (buffer[i + 2] & 0xc0) !== 0x80 || (buffer[i + 3] & 0xc0) !== 0x80) { isValidUtf8 = false; break; }
+      i += 3;
+    } else {
+      isValidUtf8 = false;
+      break;
+    }
+  }
+
+  if (isValidUtf8) return "utf-8";
+
+  // Only check Shift-JIS / EUC-JP if NOT valid UTF-8
   let sjisScore = 0;
   let eucScore = 0;
   for (let i = 0; i < Math.min(buffer.length, 4096); i++) {
