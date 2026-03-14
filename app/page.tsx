@@ -151,7 +151,7 @@ function UploadScreen({ onComplete, onSkip }: { onComplete: (data: CompanyData) 
         body: JSON.stringify({ text: content, format }),
       });
       const json = await res.json();
-      if (!res.ok) { setError(json.error); return; }
+      if (!res.ok) { setError(json.error || "テキスト解析でエラーが発生しました"); return; }
       onComplete(json.data);
     } catch (e) {
       const detail = e instanceof Error ? e.message : "";
@@ -173,7 +173,14 @@ function UploadScreen({ onComplete, onSkip }: { onComplete: (data: CompanyData) 
       formData.append("file", file);
       const res = await fetch("/api/parse-file", { method: "POST", body: formData });
       if (!res.ok) {
-        let msg = `サーバーエラー (${res.status})`;
+        let msg: string;
+        if (res.status === 504 || res.status === 408) {
+          msg = `${file.name} の処理がタイムアウトしました。ファイルサイズが大きすぎる可能性があります。`;
+        } else if (res.status === 413) {
+          msg = `${file.name} のサイズが大きすぎます。4.5MB以下のファイルをお試しください。`;
+        } else {
+          msg = `${file.name} の処理中に問題が発生しました。別のファイル形式をお試しください。`;
+        }
         try { const j = await res.json(); if (j.error) msg = j.error; } catch {}
         setError(msg);
         setLoading(false);
@@ -232,7 +239,11 @@ function UploadScreen({ onComplete, onSkip }: { onComplete: (data: CompanyData) 
         body: JSON.stringify({ url: url.trim() }),
       });
       const json = await res.json();
-      if (!res.ok) { setError(json.error); setLoading(false); return; }
+      if (!res.ok) {
+        setError(json.error || "URLからの情報取得に失敗しました。URLを確認してください。");
+        setLoading(false);
+        return;
+      }
       // Use extracted info as base text and parse
       const fakeText = [
         json.name ? `会社名：${json.name}` : "",

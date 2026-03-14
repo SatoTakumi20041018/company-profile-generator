@@ -42,8 +42,16 @@ export async function POST(req: NextRequest) {
         signal: AbortSignal.timeout(10000),
       });
     } catch (fetchErr) {
-      const msg = fetchErr instanceof Error ? fetchErr.message : "接続失敗";
-      return NextResponse.json({ error: `取得失敗: ${msg}` }, { status: 502 });
+      const raw = fetchErr instanceof Error ? fetchErr.message : "接続失敗";
+      let msg = "このURLに接続できませんでした。URLが正しいか確認してください。";
+      if (raw.includes("timeout") || raw.includes("abort")) {
+        msg = "URLの読み込みがタイムアウトしました。サイトが応答していない可能性があります。";
+      } else if (raw.includes("ENOTFOUND") || raw.includes("getaddrinfo")) {
+        msg = "URLのドメインが見つかりませんでした。URLを確認してください。";
+      } else if (raw.includes("ECONNREFUSED")) {
+        msg = "URLへの接続が拒否されました。サイトが利用可能か確認してください。";
+      }
+      return NextResponse.json({ error: msg }, { status: 400 });
     }
 
     if (!res.ok) {
